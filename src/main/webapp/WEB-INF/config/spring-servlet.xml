@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+   <!-- 메인컨트롤러를 빈으로 등록 -->
+   <bean id="xxx" class="com.simple.controller.MainController"></bean>
+   
+   <!-- 핸들러맵핑 등록 -->
+   <!-- /test/aaa 요청이 들어오면 xxx빈으로 핸들러맴핑 -->
+   <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+      <property name="mappings">
+         <props>
+            <prop key="/test/aaa">xxx</prop>
+            <prop key="/test/bbb">xxx</prop>
+         </props>
+      </property>
+   </bean>
+   
+   <!-- 뷰 합성기(뷰리졸버) -->
+   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+<property name="prefix" value="/WEB-INF/views/" />
+<property name="suffix" value=".jsp" />
+</bean>
+   
+
+</beans>
