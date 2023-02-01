@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
    <!-- 메인컨트롤러를 빈으로 등록 -->
-   <bean id="xxx" class="com.simple.controller.MainController"></bean>
+   <!-- <bean id="xxx" class="com.simple.controller.MainController"></bean> -->
    
    <!-- 핸들러맵핑 등록 -->
    <!-- /test/aaa 요청이 들어오면 xxx빈으로 핸들러맴핑 -->
-   <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+   <!-- <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
       <property name="mappings">
          <props>
             <prop key="/test/aaa">xxx</prop>
             <prop key="/test/bbb">xxx</prop>
          </props>
       </property>
-   </bean>
+   </bean> -->
+   
+   <!-- 스프링 내부에 있는 어노테이션방법으로 핸들러맵핑과 핸들러어댑터기능을 제공함 -->
+   <mvc:annotation-driven />
+   
+   <!-- 해당 패키지를 읽어서 @Controller가 있는 클래스를 자동으로 bean으로 등록시킴 include, exclude를 확장시켜 사용가능함 -->
+   <context:component-scan base-package="com.simple.**"><!-- 컨트롤러어노테이션이 붙어있는 애들을 지정한 패키지의 빈으로 만들어줌 -->
+      <context:include-filter type="annotation" expression="com.simple.controller.HomeController"/>
+   </context:component-scan> <!-- include-특정경로는 포함 -->
+   
+   <!-- css, js 정적자원들은 폴더경로로 바로 연결 -->
+   <!-- resource 경로로 들어오면 /resource폴더 연결 -->
+   <mvc:resources mapping="/resource/**" location="/resource/" />
    
    <!-- 뷰 합성기(뷰리졸버) -->
    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
